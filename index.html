@@ -7,84 +7,81 @@
   <style>
     :root {
       --card-width: 280px;
+      --radius: 1.5rem;
     }
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #0e0e0e, #1a1a1a);
-      color: white;
+      font-family: 'Pretendard', 'Segoe UI', sans-serif;
+      background: #111;
+      color: #f5f5f5;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem 1rem;
-      background-attachment: fixed;
+      padding: 3rem 1rem;
     }
     h1 {
       font-size: 3rem;
-      background: linear-gradient(90deg, #00f0ff, #ff00ff);
+      margin-bottom: 2rem;
+      background: linear-gradient(90deg, #00d2ff, #3a47d5);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 2rem;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
-      animation: pulseGlow 2s infinite;
-    }
-    @keyframes pulseGlow {
-      0% { text-shadow: 0 0 12px #fff; }
-      50% { text-shadow: 0 0 24px #ff00ff, 0 0 12px #00f0ff; }
-      100% { text-shadow: 0 0 12px #fff; }
+      text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
     }
     #app-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
       gap: 2rem;
-      max-width: 1400px;
+      width: 100%;
+      max-width: 1200px;
     }
     .card {
-      width: var(--card-width);
-      background: #1e1e1e;
-      border-radius: 2rem;
+      background: #1a1a1a;
+      border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 12px 32px rgba(0, 255, 255, 0.15);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
-      position: relative;
-      border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
     }
     .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 16px 40px rgba(255, 0, 255, 0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 32px rgba(0, 210, 255, 0.3);
     }
     .card img {
       width: 100%;
       aspect-ratio: 16/9;
       object-fit: cover;
-      filter: brightness(1.1);
     }
-    .card .info {
-      padding: 1.2rem;
-      background: linear-gradient(to bottom, #252525, #181818);
+    .info {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
-    .card .info h2 {
-      margin: 0 0 0.5rem;
-      font-size: 1.4rem;
+    .info h2 {
+      font-size: 1.2rem;
+      margin: 0;
     }
-    .card .info p {
-      font-size: 0.95rem;
-      opacity: 0.85;
+    .info p {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin: 0;
     }
     .coming-soon {
       position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
       color: white;
-      font-size: 1.2rem;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      border-radius: 2rem;
-      backdrop-filter: blur(4px);
+      font-size: 1.2rem;
+      border-radius: var(--radius);
     }
   </style>
 </head>
@@ -93,54 +90,47 @@
   <div id="app-list">로딩 중...</div>
 
   <script>
-    // 앱 목록 JSON을 불러옴
     fetch("applist.json")
-      .then(res => res.json()) // 응답을 JSON으로 파싱
+      .then(res => res.json())
       .then(data => {
         const container = document.getElementById("app-list");
-        container.innerHTML = ""; // 기존 로딩 텍스트 제거
+        container.innerHTML = "";
 
         data.forEach(app => {
-          // 카드 요소 생성
           const card = document.createElement("div");
           card.className = "card";
-          card.style.border = `2px solid ${app.theme}`; // 테마 색상 적용
+          card.style.position = "relative";
+          card.style.border = `2px solid ${app.theme}`;
 
-          // 썸네일 이미지 추가
           const image = document.createElement("img");
           image.src = app.image;
           image.alt = app.name;
           card.appendChild(image);
 
-          // 텍스트 정보 섹션 생성
           const info = document.createElement("div");
           info.className = "info";
           info.innerHTML = `
             <h2>${app.name}</h2>
             <p>${app.summary}</p>
-            <p style="font-size: 0.8rem; opacity: 0.6">v${app.version} · ${app.lastUpdate}</p>
+            <p style="font-size: 0.8rem; color: #888">v${app.version} · ${app.lastUpdate}</p>
           `;
           card.appendChild(info);
 
-          // 준비중 표시 처리
           if (app.comingSoon === "Y") {
             const overlay = document.createElement("div");
             overlay.className = "coming-soon";
             overlay.textContent = "준비중";
-            card.appendChild(overlay); // 클릭 못하게 덮음
+            card.appendChild(overlay);
           } else {
-            // 클릭 시 상세 페이지로 이동
             card.addEventListener("click", () => {
               window.location.href = `APP/?id=${app.id}`;
             });
           }
 
-          // 완성된 카드 추가
           container.appendChild(card);
         });
       })
       .catch(err => {
-        // 오류 처리
         document.getElementById("app-list").innerHTML = "앱 목록을 불러오지 못했어요 😢";
         console.error(err);
       });
