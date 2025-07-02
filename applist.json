@@ -1,13 +1,13 @@
 [
   {
-    "id": "LWD",                      // 앱 ID → APP/?id= 으로 이동됨
-    "name": "Let We Do",            // 앱 이름
-    "image": "", // 썸네일 이미지 (Base64)
-    "summary": "Ai를 활용한 새로운 공부법", // 간단 소개
-    "theme": "#ffaa33",               // 카드 테두리 색상
-    "comingSoon": "N",                // 준비중 여부 ("Y"면 오버레이 + 클릭 막힘)
-    "version": "1.0.1",               // 앱 버전
-    "lastUpdate": "2025-07-01"        // 마지막 업데이트 날짜
+    "id": "LWD",
+    "name": "Let We Do",
+    "image": "",
+    "summary": "Ai를 활용한 새로운 공부법",
+    "theme": "#ffaa33",
+    "comingSoon": "N",
+    "version": "1.0.1",
+    "lastUpdate": "2025-07-01"
   },
   {
     "id": "studyTimer",
