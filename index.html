@@ -5,670 +5,143 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LetWD App Center</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
     :root {
-      --primary: #00d4ff;
-      --secondary: #ff0080;
-      --accent: #ffbe0b;
-      --purple: #8b5cf6;
-      --green: #00ff88;
-      --success: #10b981;
-      --danger: #ff073a;
-      --bg-primary: #0a0a12;
-      --bg-secondary: #12121c;
-      --bg-card: #1a1a2e;
-      --text-primary: #ffffff;
-      --text-secondary: #a0a9c0;
-      --border: #2a2a40;
-      --glass: rgba(255, 255, 255, 0.05);
-      --shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      --card-width: 280px;
     }
-    
     body {
-      font-family: 'JetBrains Mono', monospace;
-      background: var(--bg-primary);
-      background-image: 
-        radial-gradient(circle at 20% 30%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 0, 128, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(255, 190, 11, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 60% 60%, rgba(0, 255, 136, 0.08) 0%, transparent 50%);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-      cursor: none;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e0e0e;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
     }
-    
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 8px rgba(255, 138, 0, 0.3);
+    }
+    #app-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      max-width: 1200px;
+    }
+    .card {
+      width: var(--card-width);
+      background: #1e1e1e;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .card:hover {
+      transform: scale(1.03);
+    }
+    .card img {
       width: 100%;
-      height: 100%;
-      background: 
-        linear-gradient(90deg, transparent 99%, rgba(255,255,255,0.03) 100%),
-        linear-gradient(0deg, transparent 99%, rgba(255,255,255,0.03) 100%);
-      background-size: 50px 50px;
-      pointer-events: none;
-      z-index: 1;
+      aspect-ratio: 16/9;
+      object-fit: cover;
     }
-    
-    .container {
-      position: relative;
-      z-index: 2;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2rem;
+    .card .info {
+      padding: 1rem;
     }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 4rem;
-      position: relative;
+    .card .info h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.3rem;
     }
-    
-    .title {
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 700;
-      background: linear-gradient(135deg, 
-        var(--primary) 0%, 
-        var(--secondary) 25%, 
-        var(--purple) 50%,
-        var(--accent) 75%, 
-        var(--green) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.05em;
-      line-height: 0.85;
-      margin-bottom: 1rem;
-      animation: titleGlow 3s ease-in-out infinite alternate;
-      position: relative;
-      text-shadow: 0 0 80px rgba(0, 212, 255, 0.5);
-    }
-    
-    .title::before {
-      content: 'LetWD';
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: linear-gradient(135deg, 
-        rgba(0, 212, 255, 0.8) 0%, 
-        rgba(255, 0, 128, 0.8) 50%, 
-        rgba(0, 255, 136, 0.8) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: blur(20px);
-      z-index: -1;
-      animation: titleBlur 4s ease-in-out infinite;
-    }
-    
-    @keyframes titleGlow {
-      0% {
-        filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.6)) drop-shadow(0 0 60px rgba(255, 0, 128, 0.4));
-        transform: scale(1);
-      }
-      50% {
-        filter: drop-shadow(0 0 50px rgba(255, 0, 128, 0.8)) drop-shadow(0 0 80px rgba(0, 255, 136, 0.5));
-        transform: scale(1.02);
-      }
-      100% {
-        filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.7)) drop-shadow(0 0 70px rgba(255, 190, 11, 0.4));
-        transform: scale(1.01);
-      }
-    }
-    
-    @keyframes titleBlur {
-      0%, 100% {
-        opacity: 0.3;
-        transform: scale(1.1);
-      }
-      50% {
-        opacity: 0.6;
-        transform: scale(1.2);
-      }
-    }
-    
-    .subtitle {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      font-weight: 400;
+    .card .info p {
+      font-size: 0.9rem;
       opacity: 0.8;
     }
-    
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 300px;
-      flex-direction: column;
-      gap: 2rem;
-    }
-    
-    .spinner {
-      width: 60px;
-      height: 60px;
-      border: 3px solid var(--bg-card);
-      border-top: 3px solid var(--primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .app-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 2rem;
-      animation: fadeInUp 0.8s ease-out;
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .app-card {
-      background: var(--bg-card);
-      border-radius: 20px;
-      overflow: hidden;
-      position: relative;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      cursor: pointer;
-      border: 1px solid var(--border);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-    }
-    
-    .app-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--green));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      animation: gradientShift 3s ease-in-out infinite;
-    }
-    
-    @keyframes gradientShift {
-      0%, 100% {
-        background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--green));
-      }
-      33% {
-        background: linear-gradient(90deg, var(--secondary), var(--accent), var(--green), var(--primary));
-      }
-      66% {
-        background: linear-gradient(90deg, var(--accent), var(--green), var(--primary), var(--secondary));
-      }
-    }
-    
-    .app-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
-      border-color: var(--primary);
-    }
-    
-    .app-card:hover::before {
-      opacity: 1;
-    }
-    
-    .app-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-      position: relative;
-    }
-    
-    .app-card:hover .app-image {
-      transform: scale(1.1);
-    }
-    
-    .app-content {
-      padding: 2rem;
-      position: relative;
-    }
-    
-    .app-name {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--text-primary);
-    }
-    
-    .app-summary {
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-    }
-    
-    .app-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-    }
-    
-    .version-badge {
-      background: var(--glass);
-      padding: 0.3rem 0.8rem;
-      border-radius: 12px;
-      font-weight: 600;
-      border: 1px solid var(--border);
-    }
-    
-    .status-badge {
+    .badge {
       position: absolute;
       top: 1rem;
       right: 1rem;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
+      background: crimson;
+      color: white;
       font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.7rem;
     }
-    
-    .badge-available {
-      background: linear-gradient(135deg, var(--green), var(--success));
-      color: white;
-      box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
-    }
-    
-    .badge-coming-soon {
-      background: linear-gradient(135deg, var(--accent), var(--secondary));
-      color: white;
-      box-shadow: 0 6px 20px rgba(255, 190, 11, 0.4);
-    }
-    
-    /* 커스텀 커서 스타일 */
-    .custom-cursor {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      background: radial-gradient(circle, var(--primary), var(--secondary));
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 10000;
-      transition: transform 0.1s ease;
-      mix-blend-mode: difference;
-      box-shadow: 
-        0 0 20px var(--primary),
-        0 0 40px var(--secondary),
-        0 0 60px var(--accent);
-    }
-    
-    .custom-cursor.hover {
-      transform: scale(2);
-      background: radial-gradient(circle, var(--secondary), var(--accent));
-      box-shadow: 
-        0 0 30px var(--secondary),
-        0 0 60px var(--accent),
-        0 0 90px var(--green);
-    }
-    
-    .cursor-trail {
-      position: fixed;
-      width: 6px;
-      height: 6px;
-      background: radial-gradient(circle, 
-        var(--primary) 0%, 
-        var(--secondary) 50%, 
-        transparent 100%);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      animation: trailFade 0.8s ease-out forwards;
-    }
-    
-    @keyframes trailFade {
-      0% {
-        opacity: 1;
-        transform: scale(1);
-        filter: blur(0px);
-      }
-      50% {
-        opacity: 0.5;
-        transform: scale(1.5);
-        filter: blur(1px);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(0);
-        filter: blur(3px);
-      }
-    }
-    
-    .particle {
-      position: fixed;
-      background: var(--primary);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      animation: particleFloat 2s ease-out forwards;
-    }
-    
-    @keyframes particleFloat {
-      0% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate3d(var(--random-x, 0), var(--random-y, 0), 0) scale(0);
-      }
-    }
-    
-    .coming-soon-overlay {
+    .coming-soon {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(5px);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      font-size: 1.2rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--accent);
-      border-radius: 20px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    .app-card.coming-soon .coming-soon-overlay {
-      opacity: 1;
-    }
-    
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2rem;
-      margin-top: 4rem;
-      padding: 2rem 0;
-    }
-    
-    .stat-card {
-      background: var(--bg-card);
-      padding: 2rem;
-      border-radius: 15px;
-      text-align: center;
-      border: 1px solid var(--border);
-      backdrop-filter: blur(10px);
-    }
-    
-    .stat-number {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-    }
-    
-    .stat-label {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-    
-    .error {
-      text-align: center;
-      padding: 4rem 2rem;
-      color: var(--text-secondary);
-    }
-    
-    .error-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-    
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-      
-      .app-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      
-      .app-content {
-        padding: 1.5rem;
-      }
-      
-      .stats {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
+      font-weight: bold;
+      border-radius: 1.5rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1 class="title">LetWD</h1>
-      <p class="subtitle">Next-Generation App Experience</p>
-    </div>
-    
-    <div id="app-list" class="loading">
-      <div class="spinner"></div>
-      <p>앱 목록을 불러오는 중...</p>
-    </div>
-    
-    <div class="stats" id="stats" style="display: none;">
-      <div class="stat-card">
-        <div class="stat-number" id="total-apps">0</div>
-        <div class="stat-label">Total Apps</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="available-apps">0</div>
-        <div class="stat-label">Available</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="coming-soon-apps">0</div>
-        <div class="stat-label">Coming Soon</div>
-      </div>
-    </div>
-  </div>
+  <h1>LetWD App Center</h1>
+  <div id="app-list">로딩 중...</div>
 
   <script>
-    let mouseX = 0;
-    let mouseY = 0;
-    let cursorVisible = false;
-    
-    // 커스텀 커서 생성
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    document.body.appendChild(cursor);
-    
-    async function loadApps() {
-      try {
-        const response = await fetch("applist.json");
-        if (!response.ok) throw new Error('Network response was not ok');
-        
-        const apps = await response.json();
+    // 앱 목록 JSON을 불러옴
+    fetch("applist.json")
+      .then(res => res.json()) // 응답을 JSON으로 파싱
+      .then(data => {
         const container = document.getElementById("app-list");
-        const stats = document.getElementById("stats");
-        
-        // 통계 업데이트
-        const totalApps = apps.length;
-        const availableApps = apps.filter(app => app.comingSoon !== "Y").length;
-        const comingSoonApps = apps.filter(app => app.comingSoon === "Y").length;
-        
-        document.getElementById("total-apps").textContent = totalApps;
-        document.getElementById("available-apps").textContent = availableApps;
-        document.getElementById("coming-soon-apps").textContent = comingSoonApps;
-        
-        // 앱 카드 생성
-        container.innerHTML = "";
-        container.className = "app-grid";
-        
-        apps.forEach((app, index) => {
+        container.innerHTML = ""; // 기존 로딩 텍스트 제거
+
+        data.forEach(app => {
+          // 카드 요소 생성
           const card = document.createElement("div");
-          card.className = `app-card ${app.comingSoon === "Y" ? "coming-soon" : ""}`;
-          card.style.animationDelay = `${index * 0.1}s`;
-          
-          const isComingSoon = app.comingSoon === "Y";
-          
-          card.innerHTML = `
-            <img src="${app.image}" alt="${app.name}" class="app-image" />
-            <div class="status-badge ${isComingSoon ? 'badge-coming-soon' : 'badge-available'}">
-              ${isComingSoon ? '준비중' : '사용가능'}
-            </div>
-            <div class="app-content">
-              <h2 class="app-name">${app.name}</h2>
-              <p class="app-summary">${app.summary}</p>
-              <div class="app-meta">
-                <span class="version-badge">v${app.version}</span>
-                <span>${app.lastUpdate}</span>
-              </div>
-            </div>
-            ${isComingSoon ? '<div class="coming-soon-overlay">🚀 준비중</div>' : ''}
+          card.className = "card";
+          card.style.border = `2px solid ${app.theme}`; // 테마 색상 적용
+
+          // 썸네일 이미지 추가
+          const image = document.createElement("img");
+          image.src = app.image;
+          image.alt = app.name;
+          card.appendChild(image);
+
+          // 텍스트 정보 섹션 생성
+          const info = document.createElement("div");
+          info.className = "info";
+          info.innerHTML = `
+            <h2>${app.name}</h2>
+            <p>${app.summary}</p>
+            <p style="font-size: 0.8rem; opacity: 0.6">v${app.version} · ${app.lastUpdate}</p>
           `;
-          
-          // 호버 이벤트
-          card.addEventListener('mouseenter', () => {
-            cursor.classList.add('hover');
-          });
-          
-          card.addEventListener('mouseleave', () => {
-            cursor.classList.remove('hover');
-          });
-          
-          if (!isComingSoon) {
+          card.appendChild(info);
+
+          // 준비중 표시 처리
+          if (app.comingSoon === "Y") {
+            const overlay = document.createElement("div");
+            overlay.className = "coming-soon";
+            overlay.textContent = "준비중";
+            card.appendChild(overlay); // 클릭 못하게 덮음
+          } else {
+            // 클릭 시 상세 페이지로 이동
             card.addEventListener("click", () => {
-              // 클릭 이펙트 + 파티클 폭발
-              createClickExplosion(mouseX, mouseY);
-              card.style.transform = "scale(0.95)";
-              setTimeout(() => {
-                window.location.href = `APP/?id=${app.id}`;
-              }, 150);
+              window.location.href = `APP/?id=${app.id}`;
             });
           }
-          
+
+          // 완성된 카드 추가
           container.appendChild(card);
         });
-        
-        // 통계 표시
-        stats.style.display = "grid";
-        
-      } catch (error) {
-        console.error("Error loading apps:", error);
-        document.getElementById("app-list").innerHTML = `
-          <div class="error">
-            <div class="error-icon">😢</div>
-            <h2>앱 목록을 불러올 수 없습니다</h2>
-            <p>네트워크 연결을 확인하고 다시 시도해주세요.</p>
-          </div>
-        `;
-      }
-    }
-    
-    // 마우스 움직임 추적
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      
-      // 커서 위치 업데이트
-      cursor.style.left = `${mouseX - 10}px`;
-      cursor.style.top = `${mouseY - 10}px`;
-      
-      if (!cursorVisible) {
-        cursor.style.opacity = '1';
-        cursorVisible = true;
-      }
-      
-      // 트레일 생성 (확률적으로)
-      if (Math.random() > 0.8) {
-        createTrail(mouseX, mouseY);
-      }
-    });
-    
-    // 마우스가 화면 밖으로 나갈 때
-    document.addEventListener('mouseleave', () => {
-      cursor.style.opacity = '0';
-      cursorVisible = false;
-    });
-    
-    // 트레일 생성 함수
-    function createTrail(x, y) {
-      const trail = document.createElement('div');
-      trail.className = 'cursor-trail';
-      trail.style.left = `${x - 3}px`;
-      trail.style.top = `${y - 3}px`;
-      
-      // 랜덤 색상
-      const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--green)'];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      trail.style.background = `radial-gradient(circle, ${randomColor}, transparent)`;
-      
-      document.body.appendChild(trail);
-      
-      setTimeout(() => {
-        if (trail.parentNode) {
-          trail.remove();
-        }
-      }, 800);
-    }
-    
-    // 클릭 폭발 효과
-    function createClickExplosion(x, y) {
-      const particleCount = 12;
-      const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--green)'];
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const size = Math.random() * 8 + 4;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${x - size/2}px`;
-        particle.style.top = `${y - size/2}px`;
-        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-        
-        // 랜덤 방향
-        const angle = (i / particleCount) * Math.PI * 2;
-        const distance = Math.random() * 100 + 50;
-        const randomX = Math.cos(angle) * distance;
-        const randomY = Math.sin(angle) * distance;
-        
-        particle.style.setProperty('--random-x', `${randomX}px`);
-        particle.style.setProperty('--random-y', `${randomY}px`);
-        
-        document.body.appendChild(particle);
-        
-        setTimeout(() => {
-          if (particle.parentNode) {
-            particle.remove();
-          }
-        }, 2000);
-      }
-    }
-    
-    // 페이지 로드 시 앱 목록 로드
-    loadApps();
+      })
+      .catch(err => {
+        // 오류 처리
+        document.getElementById("app-list").innerHTML = "앱 목록을 불러오지 못했어요 😢";
+        console.error(err);
+      });
   </script>
 </body>
 </html>
