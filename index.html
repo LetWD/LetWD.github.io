@@ -308,7 +308,7 @@
     // 실제 JSON 파일 로드 (Pages 배포용)
     async function fetchAppList() {
       try {
-        const response = await fetch("LetWD.github.io/applist.json");
+        const response = await fetch("https://LetWD.github.io/applist.json");
         if (response.ok) {
           return await response.json();
         }
