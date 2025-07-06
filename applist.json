@@ -18,5 +18,15 @@
     "comingSoon": "N",
     "version": "1.0.1",
     "lastUpdate": "2025-07-01"
+  },
+  {
+    "id": "LWS",
+    "name": "Let We Study",
+    "image":"",
+    "summary": "Ai가 알려주는 새로운 지식",
+    "theme": "#ffffff",
+    "comingSoon": "Y",
+    "version": "1.0.0",
+    "lastUpdate": "2025-07-06"
   }
 ]
